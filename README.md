@@ -1,5 +1,4 @@
-mongohide
-=================
+# mongohide
 
 NodeJS CLI to hide data in MongoDB. Can handle nested sub-documents fields and arrays. Internally uses [faker.js](https://fakerjs.dev/) to generate fake data.
 
@@ -8,15 +7,16 @@ NodeJS CLI to hide data in MongoDB. Can handle nested sub-documents fields and a
 [![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/oclif/hello-world/blob/main/LICENSE)
 
 # Usage
-<!-- usage -->
+
 ```bash
 npx mongohide \
 --fields="name, phone" \
 --uri="mongodb://localhost:27017" \
---db="test" 
+--db="test"
 ```
 
 ### Specify one or more collections to include or exclude
+
 ```bash
 npx mongohide \
 --fields="name, phone" \
@@ -27,8 +27,7 @@ npx mongohide \
 ```
 
 :warning: **Collections names are case sensitive. Fields are not**.
-<!-- usagestop -->
 
 Inspired by [mongodb-anonymizer](https://www.npmjs.com/package/mongodb-anonymizer)
 
-Contributions are welcome! Please open an issue or submit a pull request. 
+Contributions are welcome! Please open an issue or submit a pull request.
