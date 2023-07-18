@@ -1,0 +1,62 @@
+{
+  "name": "mongohide",
+  "version": "0.1.0",
+  "description": "NodeJS CLI to hide data in MongoDB",
+  "author": "Uelbert Borges",
+  "bin": {
+    "mongohide": "./bin/run"
+  },
+  "homepage": "https://github.com/uelb0t/hide",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": "uelb0t/mongohide",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "dependencies": {
+    "@oclif/core": "^2",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.4.7",
+    "enforce-unique": "^1.1.1",
+    "mongodb": "^5.7.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@oclif/test": "^2.3.26",
+    "@types/node": "^16.18.38",
+    "eslint": "^7.32.0",
+    "eslint-config-oclif": "^4",
+    "eslint-config-oclif-typescript": "^1.0.3",
+    "oclif": "^3",
+    "shx": "^0.3.3",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.0",
+    "typescript": "^4.9.5"
+  },
+  "oclif": {
+    "default": ".",
+    "commands": "./dist"
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "npm run lint",
+    "prepack": "npm run build && oclif manifest && oclif readme",
+    "version": "oclif readme && git add README.md"
+  },
+  "engines": {
+    "node": ">=12.9.0"
+  },
+  "bugs": "https://github.com/uelb0t/mongohide/issues",
+  "keywords": [
+    "oclif",
+    "mongodb",
+    "anonymize",
+    "data"
+  ],
+  "types": "dist/index.d.ts"
+}

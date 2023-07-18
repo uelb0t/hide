@@ -1,0 +1,15 @@
+{
+  "extends": ["oclif", "oclif-typescript"],
+  "rules": {
+    "semi": "off",
+    "object-curly-spacing": "off",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "indent": "off",
+    "arrow-parens": "off",
+    "quotes": "off",
+    "comma-dangle": "off",
+    "no-await-in-loop": "off",
+    "operator-linebreak": "off"
+  }
+}
