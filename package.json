@@ -6,7 +6,7 @@
   "bin": {
     "mongohide": "./bin/run"
   },
-  "homepage": "https://github.com/uelb0t/hide",
+  "homepage": "https://github.com/uelb0t/mongohide",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": "uelb0t/mongohide",

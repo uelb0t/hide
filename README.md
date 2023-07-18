@@ -26,8 +26,9 @@ npx mongohide \
 --excludeCollections="products"
 ```
 
-Inspired by [mongodb-anonymizer](https://www.npmjs.com/package/mongodb-anonymizer)
-
+:warning: **Collections names are case sensitive. Fields are not**.
 <!-- usagestop -->
 
-Contributions are welcome!
+Inspired by [mongodb-anonymizer](https://www.npmjs.com/package/mongodb-anonymizer)
+
+Contributions are welcome! Please open an issue or submit a pull request. 
