@@ -13,6 +13,8 @@ export default class MongoHide extends Command {
   ];
 
   static flags = {
+    version: Flags.version({ char: "v" }),
+    help: Flags.help({ char: "h" }),
     uri: Flags.string({
       char: "u",
       description: "database uri.",
@@ -25,14 +27,15 @@ export default class MongoHide extends Command {
     }),
     fields: Flags.string({
       char: "f",
-      description: "fields to anonymize (comma separated).",
+      description: "fields to anonymize (comma separated, case insensitive).",
       default: "name, phone, email",
     }),
     includeCollections: Flags.string({
-      description: "includes collections (comma separated).",
+      description:
+        "only includes these collections (comma separated, case sensitive).",
     }),
     excludeCollections: Flags.string({
-      description: "excludes collections (comma separated).",
+      description: "excludes collections (comma separated, case sensitive).",
     }),
   };
 
@@ -45,26 +48,26 @@ export default class MongoHide extends Command {
       const db = client.db(flags.db);
       const start = Date.now();
 
-      const collections = await db.listCollections().toArray();
-      const collectionsToAnonymize = collections
-        .filter((collection) => {
-          if (flags.includeCollections) {
-            return flags.includeCollections
-              .split(",")
-              .map((collection) => collection.trim())
-              .includes(collection.name);
-          }
+      let collectionsToAnonymize = [];
+      if (flags.includeCollections) {
+        collectionsToAnonymize = flags.includeCollections
+          .split(",")
+          .map((collection) => collection.trim());
+      } else {
+        const dbCollections = await db.listCollections().toArray();
+        collectionsToAnonymize = dbCollections
+          .filter((collection) => {
+            if (flags.excludeCollections) {
+              return !flags.excludeCollections
+                .split(",")
+                .map((collection) => collection.trim())
+                .includes(collection.name);
+            }
 
-          if (flags.excludeCollections) {
-            return !flags.excludeCollections
-              .split(",")
-              .map((collection) => collection.trim())
-              .includes(collection.name);
-          }
-
-          return true;
-        })
-        .map((collection) => collection.name);
+            return true;
+          })
+          .map((collection) => collection.name);
+      }
 
       const fieldsToAnonymize = flags.fields
         .split(",")
@@ -72,7 +75,7 @@ export default class MongoHide extends Command {
 
       let collectionsProcessed = 0;
       const collectionPromises = collectionsToAnonymize.map(
-        async (collectionName) => {
+        async (collectionName: string) => {
           const collection = db.collection(collectionName);
           const processedCount = await this.anonymizeCollection(
             collection,

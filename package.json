@@ -38,7 +38,11 @@
   },
   "oclif": {
     "default": ".",
-    "commands": "./dist"
+    "commands": "./dist",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ]
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
