@@ -105,11 +105,10 @@ export default class MongoHide extends Command {
     );
 
     await Promise.all(collectionPromises);
-    this.log("✅ Data hidden completed.");
 
     const timeElapsedInMs = Date.now() - start;
     this.log(
-      `⏱️ Time elapsed: ${
+      `\n✅ Data hidden completed. 🕐 Time elapsed: ${
         timeElapsedInMs > 1000
           ? Math.floor(timeElapsedInMs / 1000)
           : timeElapsedInMs
@@ -135,6 +134,7 @@ export default class MongoHide extends Command {
     collection: Collection,
     fields: Field[]
   ): Promise<number> {
+    this.log(`⏳ Anonymizing collection: ${collection.collectionName}`);
     const cursor = collection.find();
 
     let bulkUpdate = [];
@@ -169,15 +169,17 @@ export default class MongoHide extends Command {
     for (const key in doc) {
       if (!doc) continue;
 
-      const field = fields.find((field) => field.name === key);
+      const field = fields.find((field) => field.name === key.toLowerCase());
       if (field) {
         doc[key] = doc[key] ? this.fakeValue(field) : doc[key];
-      } else if (Array.isArray(doc[key])) {
-        for (const element of doc[key]) {
-          this.anonymizeFields(element, fields);
+
+        if (Array.isArray(doc[key])) {
+          for (const element of doc[key]) {
+            this.anonymizeFields(element, fields);
+          }
+        } else if (typeof doc[key] === "object" && doc[key] !== null) {
+          this.anonymizeFields(doc[key], fields);
         }
-      } else if (typeof doc[key] === "object" && doc[key] !== null) {
-        this.anonymizeFields(doc[key], fields);
       }
     }
   }
