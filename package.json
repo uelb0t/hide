@@ -1,6 +1,6 @@
 {
   "name": "mongohide",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "NodeJS CLI to hide data in MongoDB",
   "author": "Uelbert Borges @uelb0t",
   "bin": {
