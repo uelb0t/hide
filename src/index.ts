@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { Faker, faker, fakerPT_BR as fakerBR, fakerES } from "@faker-js/faker";
 import { Command, Flags } from "@oclif/core";
 import { UniqueEnforcer } from "enforce-unique";
 import { Collection, MongoClient } from "mongodb";
@@ -13,22 +13,17 @@ export default class MongoHide extends Command {
   ];
 
   static flags = {
-    version: Flags.version({ char: "v" }),
-    help: Flags.help({ char: "h" }),
     uri: Flags.string({
-      char: "u",
       description: "database uri.",
       required: true,
     }),
     db: Flags.string({
-      char: "d",
       description: "database name.",
       required: true,
     }),
     fields: Flags.string({
-      char: "f",
       description: "fields to anonymize (comma separated, case insensitive).",
-      default: "name, phone, email",
+      required: true,
     }),
     includeCollections: Flags.string({
       description:
@@ -37,7 +32,14 @@ export default class MongoHide extends Command {
     excludeCollections: Flags.string({
       description: "excludes collections (comma separated, case sensitive).",
     }),
+    locale: Flags.string({
+      description: "locale to use for faker.",
+      default: "en",
+      options: ["en", "es", "ptBR"],
+    }),
   };
+
+  private faker: Faker = faker;
 
   public async run(): Promise<void> {
     const { flags } = await this.parse(MongoHide);
@@ -73,6 +75,8 @@ export default class MongoHide extends Command {
         .split(",")
         .map((field) => field.trim());
 
+      this.faker = this.getFaker(flags.locale);
+
       let collectionsProcessed = 0;
       const collectionPromises = collectionsToAnonymize.map(
         async (collectionName: string) => {
@@ -107,6 +111,17 @@ export default class MongoHide extends Command {
     } finally {
       await client.close();
       this.exit();
+    }
+  }
+
+  private getFaker(locale: string): Faker {
+    switch (locale) {
+      case "es":
+        return fakerES;
+      case "pt_BR":
+        return fakerBR;
+      default:
+        return this.faker;
     }
   }
 
@@ -166,15 +181,15 @@ export default class MongoHide extends Command {
     field = field.toLowerCase();
     if (field.includes("name")) {
       if (field.includes("company") || field.includes("group"))
-        return faker.company.name();
-      return faker.person.fullName();
+        return this.faker.company.name();
+      return this.faker.person.fullName();
     }
 
-    if (field.includes("company")) return faker.company.name();
+    if (field.includes("company")) return this.faker.company.name();
     if (field.includes("email"))
       return uniqueEnforcerEmail.enforce(
         () => {
-          return faker.internet
+          return this.faker.internet
             .email({ provider: "mongohide.dev" })
             .toLowerCase();
         },
@@ -182,18 +197,22 @@ export default class MongoHide extends Command {
           maxTime: 1000,
         }
       );
-    if (field.includes("phone")) return faker.phone.number().replace(/\D/g, "");
-    if (field.includes("address")) return faker.location.streetAddress();
-    if (field.includes("street")) return faker.location.street();
-    if (field.includes("country")) return faker.location.country();
-    if (field.includes("city")) return faker.location.city();
-    if (field.includes("state")) return faker.location.state();
-    if (field.includes("zip")) return faker.location.zipCode();
-    if (field.includes("description")) return faker.lorem.paragraph();
+    if (field.includes("phone"))
+      return this.faker.phone.number().replace(/\D/g, "");
+    if (field.includes("address")) return this.faker.location.streetAddress();
+    if (field.includes("street")) return this.faker.location.street();
+    if (field.includes("country")) return this.faker.location.country();
+    if (field.includes("city")) return this.faker.location.city();
+    if (field.includes("state")) return this.faker.location.state();
+    if (field.includes("zip")) return this.faker.location.zipCode();
+    if (field.includes("description")) return this.faker.lorem.paragraph();
     if (field.includes("date"))
-      return faker.date.past({ years: 10, refDate: new Date("2000-01-01") });
-    if (field.includes("url")) return faker.internet.url();
-    if (field.includes("ip")) return faker.internet.ip();
-    return faker.word.words({ count: { min: 1, max: 1 } });
+      return this.faker.date.past({
+        years: 10,
+        refDate: new Date("2000-01-01"),
+      });
+    if (field.includes("url")) return this.faker.internet.url();
+    if (field.includes("ip")) return this.faker.internet.ip();
+    return this.faker.word.words({ count: { min: 1, max: 1 } });
   }
 }

@@ -17,6 +17,7 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.4.7",
@@ -24,7 +25,6 @@
     "mongodb": "^5.7.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@oclif/test": "^2.3.26",
     "@types/node": "^16.18.38",
     "eslint": "^7.32.0",

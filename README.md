@@ -25,9 +25,17 @@ npx mongohide \
 --includeCollections="orders, customers" \
 --excludeCollections="products"
 ```
-
 :warning: **Collections names are case sensitive. Fields are not**.
 
-Inspired by [mongodb-anonymizer](https://www.npmjs.com/package/mongodb-anonymizer)
+### Specify faker locale data
+
+```bash
+npx mongohide \
+--fields="name, phone" \
+--uri="mongodb://localhost:27017" \
+--db="test" \
+--locale="pt_BR"
+```
+
 
 Contributions are welcome! Please open an issue or submit a pull request.
