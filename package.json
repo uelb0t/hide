@@ -45,7 +45,7 @@
     ]
   },
   "scripts": {
-    "build": "shx rm -rf dist tsconfig.tsbuildinfo && tsc -b",
+    "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "npm run build && oclif manifest"

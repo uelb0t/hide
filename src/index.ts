@@ -1,4 +1,4 @@
-import { Faker, faker, fakerPT_BR as fakerBR, fakerES } from "@faker-js/faker";
+import { Faker, faker, fakerES, fakerPT_BR as fakerPT } from "@faker-js/faker";
 import { Command, Flags } from "@oclif/core";
 import { UniqueEnforcer } from "enforce-unique";
 import { Collection, MongoClient } from "mongodb";
@@ -35,7 +35,7 @@ export default class MongoHide extends Command {
     locale: Flags.string({
       description: "locale to use for faker.",
       default: "en",
-      options: ["en", "es", "ptBR"],
+      options: ["en", "es", "pt"],
     }),
   };
 
@@ -118,8 +118,8 @@ export default class MongoHide extends Command {
     switch (locale) {
       case "es":
         return fakerES;
-      case "pt_BR":
-        return fakerBR;
+      case "pt":
+        return fakerPT;
       default:
         return this.faker;
     }
