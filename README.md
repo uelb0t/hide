@@ -25,6 +25,7 @@ npx mongohide \
 --includeCollections="orders, customers" \
 --excludeCollections="products"
 ```
+
 :warning: **Collections names are case sensitive. Fields are not**.
 
 ### Specify faker locale data
@@ -34,8 +35,18 @@ npx mongohide \
 --fields="name, phone" \
 --uri="mongodb://localhost:27017" \
 --db="test" \
---locale="pt_BR"
+--locale="pt"
 ```
 
+### Customize field value
+
+```bash
+npx mongohide \
+--fields="number:string.numeric, name" \
+--uri="mongodb://localhost:27017" \
+--db="test" \
+```
+
+Don't need to specify the field type, they will be inferred from the field name (default is [`lorem.word`](https://fakerjs.dev/api/lorem.html#word)). If you want to specify the type, use the format `field:type`. See [faker.js](https://fakerjs.dev/api) for available types.
 
 Contributions are welcome! Please open an issue or submit a pull request.

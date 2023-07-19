@@ -13,8 +13,7 @@
   "files": [
     "/bin",
     "/dist",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/npm-shrinkwrap.json"
   ],
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
@@ -45,13 +44,13 @@
     ]
   },
   "scripts": {
-    "build": "shx rm -rf dist tsconfig.tsbuildinfo && tsc -b",
+    "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "npm run build && oclif manifest"
   },
   "engines": {
-    "node": ">=12.9.0"
+    "node": ">=12.0.0"
   },
   "bugs": "https://github.com/uelb0t/mongohide/issues",
   "keywords": [
