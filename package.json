@@ -2,7 +2,7 @@
   "name": "mongohide",
   "version": "0.2.1",
   "description": "NodeJS CLI to hide data in MongoDB",
-  "author": "Uelbert Borges",
+  "author": "Uelbert Borges @uelb0t",
   "bin": {
     "mongohide": "./bin/run"
   },
@@ -45,12 +45,10 @@
     ]
   },
   "scripts": {
-    "build": "shx rm -rf dist && tsc -b",
+    "build": "shx rm -rf dist tsconfig.tsbuildinfo && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
-    "prepack": "npm run build && oclif manifest && oclif readme",
-    "version": "oclif readme && git add README.md"
+    "prepack": "npm run build && oclif manifest"
   },
   "engines": {
     "node": ">=12.9.0"
